@@ -1,16 +1,29 @@
 // ============================================
-// Navbar Scroll Effect and Mobile Menu
+// Portfolio Website - Complete JavaScript
+// Version: 2.0 with Static Profile Photo
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function () {
+    // ============================================
+    // Global Variables and Elements
+    // ============================================
+
     const navbar = document.getElementById('navbar');
     const mobileMenu = document.getElementById('mobile-menu');
     const navMenu = document.getElementById('nav-menu');
     const navLinks = document.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('section');
     const backToTopBtn = document.getElementById('back-to-top');
+    const themeToggle = document.getElementById('theme-checkbox');
+    const contactForm = document.getElementById('contact-form');
+    const profileImg = document.getElementById('profile-img');
+    const photoPlaceholder = document.getElementById('photo-placeholder');
+    const profilePhoto = document.getElementById('profile-photo');
 
-    // Navbar scroll effect
+    // ============================================
+    // Navbar Scroll Effect and Mobile Menu
+    // ============================================
+
     function handleScroll() {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
@@ -29,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateActiveNavLink();
     }
 
-    // Mobile menu toggle
     function toggleMobileMenu() {
         mobileMenu.classList.toggle('active');
         navMenu.classList.toggle('active');
@@ -42,14 +54,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Close mobile menu when clicking on a link
     function closeMobileMenu() {
         mobileMenu.classList.remove('active');
         navMenu.classList.remove('active');
         document.body.style.overflow = '';
     }
 
-    // Update active navigation link based on scroll position
     function updateActiveNavLink() {
         let current = '';
         sections.forEach(section => {
@@ -68,79 +78,198 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Event listeners
-    window.addEventListener('scroll', handleScroll);
-    mobileMenu.addEventListener('click', toggleMobileMenu);
+    // ============================================
+    // Theme Toggle Functionality
+    // ============================================
 
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            closeMobileMenu();
+    const body = document.body;
+    const html = document.documentElement;
 
-            // Smooth scroll to target section
-            const targetId = link.getAttribute('href');
-            if (targetId.startsWith('#')) {
+    // Check for saved theme preference or default to 'light'
+    const currentTheme = localStorage.getItem('theme') || 'light';
+
+    // Apply the saved theme
+    html.setAttribute('data-theme', currentTheme);
+
+    // Update toggle state based on current theme
+    if (currentTheme === 'dark' && themeToggle) {
+        themeToggle.checked = true;
+    }
+
+    // Theme toggle event listener
+    if (themeToggle) {
+        themeToggle.addEventListener('change', function () {
+            if (this.checked) {
+                // Switch to dark theme
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                showNotification('Dark theme activated! 🌙', 'success');
+            } else {
+                // Switch to light theme
+                html.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                showNotification('Light theme activated! ☀️', 'success');
+            }
+            updateScrollEffects();
+        });
+
+        // Add keyboard support for theme toggle
+        themeToggle.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                const targetSection = document.querySelector(targetId);
-                if (targetSection) {
-                    const offsetTop = targetSection.offsetTop - 70;
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
+                this.checked = !this.checked;
+                this.dispatchEvent(new Event('change'));
+            }
+        });
+    }
+
+    // Auto theme detection based on system preference
+    function detectSystemTheme() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark';
+        }
+        return 'light';
+    }
+
+    // Listen for system theme changes
+    if (window.matchMedia) {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        mediaQuery.addEventListener('change', function (e) {
+            // Only auto-switch if user hasn't manually set a preference
+            if (!localStorage.getItem('theme')) {
+                const newTheme = e.matches ? 'dark' : 'light';
+                html.setAttribute('data-theme', newTheme);
+                if (themeToggle) {
+                    themeToggle.checked = newTheme === 'dark';
                 }
             }
         });
-    });
+    }
 
-    // Back to top button functionality
-    backToTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!navbar.contains(e.target) && navMenu.classList.contains('active')) {
-            closeMobileMenu();
+    // Initialize theme on first visit based on system preference
+    if (!localStorage.getItem('theme')) {
+        const systemTheme = detectSystemTheme();
+        html.setAttribute('data-theme', systemTheme);
+        if (themeToggle) {
+            themeToggle.checked = systemTheme === 'dark';
         }
-    });
+        localStorage.setItem('theme', systemTheme);
+    }
 
-    // Prevent menu close when clicking inside the menu
-    navMenu.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
+    // Theme-aware scroll effects
+    function updateScrollEffects() {
+        const isDark = html.getAttribute('data-theme') === 'dark';
+
+        if (navbar) {
+            if (isDark) {
+                navbar.style.backdropFilter = 'blur(15px)';
+            } else {
+                navbar.style.backdropFilter = 'blur(10px)';
+            }
+        }
+    }
 
     // ============================================
-    // Intersection Observer for Animations
+    // Static Profile Photo Management
     // ============================================
 
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+    // Handle image loading and error states
+    if (profileImg) {
+        // Add loading effect
+        profileImg.addEventListener('load', function () {
+            this.style.display = 'block';
+            if (photoPlaceholder) {
+                photoPlaceholder.style.display = 'none';
+            }
+            console.log('Profile photo loaded successfully');
+        });
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+        // Handle image load error
+        profileImg.addEventListener('error', function () {
+            this.style.display = 'none';
+            if (photoPlaceholder) {
+                photoPlaceholder.style.display = 'flex';
+            }
+            console.log('Profile photo not found, showing placeholder');
+        });
+
+        // Check if image exists and is loaded
+        if (profileImg.complete) {
+            if (profileImg.naturalWidth > 0) {
+                profileImg.style.display = 'block';
+                if (photoPlaceholder) {
+                    photoPlaceholder.style.display = 'none';
+                }
+            } else {
+                profileImg.style.display = 'none';
+                if (photoPlaceholder) {
+                    photoPlaceholder.style.display = 'flex';
+                }
+            }
+        }
+
+        // Add accessibility features
+        profileImg.setAttribute('tabindex', '0');
+        profileImg.addEventListener('focus', function () {
+            this.parentElement.style.outline = '2px solid var(--primary-color)';
+            this.parentElement.style.outlineOffset = '4px';
+        });
+
+        profileImg.addEventListener('blur', function () {
+            this.parentElement.style.outline = 'none';
+        });
+    }
+
+    // Add professional hover effects
+    if (profilePhoto) {
+        profilePhoto.addEventListener('mouseenter', function () {
+            this.style.transform = 'scale(1.05) rotate(2deg)';
+        });
+
+        profilePhoto.addEventListener('mouseleave', function () {
+            this.style.transform = 'scale(1) rotate(0deg)';
+        });
+    }
+
+    // ============================================
+    // Resume Download Functionality - PDF Only
+    // ============================================
+
+    const resumeDownloadBtns = document.querySelectorAll('a[href*="Resume_Murali_Munireddy.pdf"]');
+
+    // Add download tracking and notification
+    resumeDownloadBtns.forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            // Show download notification
+            showNotification('Resume download started! Check your downloads folder.', 'success');
+
+            // Optional: Add download analytics
+            console.log('Resume downloaded:', new Date().toISOString());
+
+            // Track downloads for analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'download', { 'file_name': 'Murali_Munireddy_Resume.pdf' });
             }
         });
-    }, observerOptions);
 
-    // Observe elements for fade-in animation
-    const animateElements = document.querySelectorAll('.skill-category, .project-card, .timeline-item, .cert-item, .highlight-item');
-    animateElements.forEach(el => {
-        el.classList.add('fade-in');
-        observer.observe(el);
+        // Add hover effects
+        btn.addEventListener('mouseenter', function () {
+            this.style.transform = 'translateY(-3px)';
+        });
+
+        btn.addEventListener('mouseleave', function () {
+            this.style.transform = 'translateY(0)';
+        });
+
+        // Handle file not found error
+        btn.addEventListener('error', function () {
+            showNotification('Resume file not found. Please contact the site owner.', 'error');
+        });
     });
 
     // ============================================
     // Contact Form Handling
     // ============================================
-
-    const contactForm = document.getElementById('contact-form');
 
     if (contactForm) {
         contactForm.addEventListener('submit', function (e) {
@@ -184,7 +313,145 @@ document.addEventListener('DOMContentLoaded', function () {
         return emailRegex.test(email);
     }
 
-    // Notification system
+    // ============================================
+    // Intersection Observer for Animations
+    // ============================================
+
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    // Observe elements for fade-in animation
+    const animateElements = document.querySelectorAll('.skill-category, .project-card, .timeline-item, .cert-item, .highlight-item');
+    animateElements.forEach(el => {
+        el.classList.add('fade-in');
+        observer.observe(el);
+    });
+
+    // Photo visibility observer
+    if (profilePhoto) {
+        observer.observe(profilePhoto);
+    }
+
+    // ============================================
+    // Smooth Scrolling for Internal Links
+    // ============================================
+
+    const internalLinks = document.querySelectorAll('a[href^="#"]');
+    internalLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                const offsetTop = target.offsetTop - 70;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // ============================================
+    // Event Listeners Setup
+    // ============================================
+
+    // Mobile menu toggle
+    if (mobileMenu) {
+        mobileMenu.addEventListener('click', toggleMobileMenu);
+    }
+
+    // Navigation links
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            closeMobileMenu();
+
+            // Smooth scroll to target section
+            const targetId = link.getAttribute('href');
+            if (targetId.startsWith('#')) {
+                e.preventDefault();
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    const offsetTop = targetSection.offsetTop - 70;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    });
+
+    // Back to top button functionality
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Add keyboard support
+        backToTopBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    }
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!navbar.contains(e.target) && navMenu.classList.contains('active')) {
+            closeMobileMenu();
+        }
+    });
+
+    // Prevent menu close when clicking inside the menu
+    if (navMenu) {
+        navMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+
+    // ============================================
+    // Performance Optimizations
+    // ============================================
+
+    // Throttle scroll events for better performance
+    let ticking = false;
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                handleScroll();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }
+
+    // Throttled scroll event listener
+    window.addEventListener('scroll', requestTick);
+
+    // ============================================
+    // Notification System
+    // ============================================
+
     function showNotification(message, type = 'info') {
         // Remove existing notifications
         const existingNotifications = document.querySelectorAll('.notification');
@@ -213,13 +480,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     right: 20px;
                     max-width: 400px;
                     padding: 1rem 1.5rem;
-                    background: white;
+                    background: var(--card-bg);
                     border-radius: 8px;
                     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
                     border-left: 4px solid var(--primary-color);
                     z-index: 10000;
                     transform: translateX(100%);
                     animation: slideInRight 0.3s ease-out forwards;
+                    border: 1px solid var(--border-light);
                 }
                 
                 .notification-error {
@@ -254,7 +522,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 
                 .notification-close:hover {
-                    background: var(--bg-gray);
+                    background: var(--surface-bg);
                     color: var(--text-dark);
                 }
                 
@@ -297,46 +565,64 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ============================================
-    // Smooth Scrolling for all internal links
+    // Keyboard Navigation Support
     // ============================================
 
-    const internalLinks = document.querySelectorAll('a[href^="#"]');
-    internalLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
-            const href = this.getAttribute('href');
-            if (href === '#') return;
-
-            const target = document.querySelector(href);
-            if (target) {
+    // Add keyboard support for mobile menu
+    if (mobileMenu) {
+        mobileMenu.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                const offsetTop = target.offsetTop - 70;
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
+                toggleMobileMenu();
             }
         });
-    });
-
-    // ============================================
-    // Performance Optimizations
-    // ============================================
-
-    // Throttle scroll events for better performance
-    let ticking = false;
-    function requestTick() {
-        if (!ticking) {
-            requestAnimationFrame(() => {
-                handleScroll();
-                ticking = false;
-            });
-            ticking = true;
-        }
     }
 
-    // Replace scroll event listener with throttled version
-    window.removeEventListener('scroll', handleScroll);
-    window.addEventListener('scroll', requestTick);
+    // Trap focus in mobile menu when open
+    const focusableElements = navMenu ? navMenu.querySelectorAll('a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])') : [];
+    const firstFocusableElement = focusableElements[0];
+    const lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+    if (navMenu) {
+        navMenu.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab' && navMenu.classList.contains('active')) {
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusableElement) {
+                        lastFocusableElement.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusableElement) {
+                        firstFocusableElement.focus();
+                        e.preventDefault();
+                    }
+                }
+            }
+
+            // Close menu with Escape key
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                closeMobileMenu();
+                if (mobileMenu) {
+                    mobileMenu.focus();
+                }
+            }
+        });
+    }
+
+    // ============================================
+    // Enhanced Theme Features
+    // ============================================
+
+    // Add visual feedback for theme toggle
+    const themeLabel = document.querySelector('.theme-label');
+    if (themeLabel) {
+        themeLabel.addEventListener('click', function () {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+    }
 
     // ============================================
     // Preload Critical Resources
@@ -353,61 +639,18 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     document.head.appendChild(fontPreload);
 
-    // Initialize everything
-    handleScroll(); // Initial call to set navbar state
-    updateActiveNavLink(); // Initial call to set active nav link
-
     // ============================================
-    // Keyboard Navigation Support
+    // Initialize Everything
     // ============================================
 
-    // Add keyboard support for mobile menu
-    mobileMenu.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            toggleMobileMenu();
-        }
-    });
+    // Initial function calls
+    handleScroll(); // Set initial navbar state
+    updateActiveNavLink(); // Set initial active nav link
+    updateScrollEffects(); // Set initial scroll effects
 
-    // Add keyboard support for back to top button
-    backToTopBtn.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-    });
-
-    // Trap focus in mobile menu when open
-    const focusableElements = navMenu.querySelectorAll('a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
-    const firstFocusableElement = focusableElements[0];
-    const lastFocusableElement = focusableElements[focusableElements.length - 1];
-
-    navMenu.addEventListener('keydown', (e) => {
-        if (e.key === 'Tab' && navMenu.classList.contains('active')) {
-            if (e.shiftKey) {
-                if (document.activeElement === firstFocusableElement) {
-                    lastFocusableElement.focus();
-                    e.preventDefault();
-                }
-            } else {
-                if (document.activeElement === lastFocusableElement) {
-                    firstFocusableElement.focus();
-                    e.preventDefault();
-                }
-            }
-        }
-
-        // Close menu with Escape key
-        if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-            closeMobileMenu();
-            mobileMenu.focus();
-        }
-    });
-
-    console.log('Portfolio website loaded successfully! 🚀');
+    // Log successful initialization
+    const currentThemeLog = localStorage.getItem('theme') || 'light';
+    console.log(`Portfolio website loaded successfully with ${currentThemeLog} theme! 🚀`);
 });
 
 // ============================================
@@ -427,351 +670,7 @@ if ('serviceWorker' in navigator) {
 }
 
 // ============================================
-// Profile Photo Upload Functionality
-// ============================================
-
-document.addEventListener('DOMContentLoaded', function () {
-    const photoInput = document.getElementById('photo-input');
-    const profileImg = document.getElementById('profile-img');
-    const photoPlaceholder = document.getElementById('photo-placeholder');
-    const photoUpload = document.getElementById('photo-upload');
-
-    // Handle photo upload
-    if (photoInput) {
-        photoInput.addEventListener('change', function (e) {
-            const file = e.target.files[0];
-
-            if (file) {
-                // Validate file type
-                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-                if (!validTypes.includes(file.type)) {
-                    showNotification('Please select a valid image file (JPEG, PNG, GIF, or WebP).', 'error');
-                    return;
-                }
-
-                // Validate file size (max 5MB)
-                const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-                if (file.size > maxSize) {
-                    showNotification('Image size should be less than 5MB.', 'error');
-                    return;
-                }
-
-                // Create FileReader to display image
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    profileImg.src = e.target.result;
-                    profileImg.style.display = 'block';
-                    photoPlaceholder.style.display = 'none';
-
-                    // Store image in localStorage for persistence
-                    localStorage.setItem('profilePhoto', e.target.result);
-
-                    showNotification('Profile photo updated successfully!', 'success');
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
-
-    // Load saved profile photo on page load
-    const savedPhoto = localStorage.getItem('profilePhoto');
-    if (savedPhoto && profileImg) {
-        profileImg.src = savedPhoto;
-        profileImg.style.display = 'block';
-        photoPlaceholder.style.display = 'none';
-    }
-
-    // Make placeholder clickable
-    if (photoPlaceholder) {
-        photoPlaceholder.addEventListener('click', function () {
-            photoInput.click();
-        });
-    }
-
-    // ============================================
-    // Resume Download Functionality - PDF Only
-    // ============================================
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const downloadResumeBtn = document.getElementById('download-resume');
-        const resumeDownloadBtns = document.querySelectorAll('a[href*="Resume_Murali_Munireddy.pdf"]');
-
-        // Add download tracking and notification
-        resumeDownloadBtns.forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                // Check if file exists (basic check)
-                const link = this.getAttribute('href');
-
-                // Show download notification
-                showNotification('Resume download started! Check your downloads folder.', 'success');
-
-                // Optional: Add download analytics
-                console.log('Resume downloaded:', new Date().toISOString());
-
-                // If you want to track downloads, you can add analytics here
-                // Example: gtag('event', 'download', { 'file_name': 'Murali_Munireddy_Resume.pdf' });
-            });
-        });
-
-        // Add hover effect for resume buttons
-        resumeDownloadBtns.forEach(btn => {
-            btn.addEventListener('mouseenter', function () {
-                this.style.transform = 'translateY(-3px)';
-            });
-
-            btn.addEventListener('mouseleave', function () {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-
-        // Handle file not found error (optional)
-        resumeDownloadBtns.forEach(btn => {
-            btn.addEventListener('error', function () {
-                showNotification('Resume file not found. Please contact the site owner.', 'error');
-            });
-        });
-    });
-
-
-    // ============================================
-    // Enhanced Photo Management
-    // ============================================
-
-    // Add right-click context menu for photo management
-    if (profileImg) {
-        profileImg.addEventListener('contextmenu', function (e) {
-            e.preventDefault();
-            showPhotoContextMenu(e.clientX, e.clientY);
-        });
-    }
-
-    function showPhotoContextMenu(x, y) {
-        // Remove existing context menu
-        const existingMenu = document.querySelector('.photo-context-menu');
-        if (existingMenu) {
-            existingMenu.remove();
-        }
-
-        // Create context menu
-        const contextMenu = document.createElement('div');
-        contextMenu.className = 'photo-context-menu';
-        contextMenu.innerHTML = `
-            <div class="context-menu-item" onclick="changePhoto()">
-                <i class="fas fa-edit"></i> Change Photo
-            </div>
-            <div class="context-menu-item" onclick="removePhoto()">
-                <i class="fas fa-trash"></i> Remove Photo
-            </div>
-        `;
-
-        contextMenu.style.cssText = `
-            position: fixed;
-            top: ${y}px;
-            left: ${x}px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 10000;
-            padding: 8px 0;
-            min-width: 150px;
-        `;
-
-        document.body.appendChild(contextMenu);
-
-        // Add styles for context menu items
-        const style = document.createElement('style');
-        style.textContent = `
-            .photo-context-menu .context-menu-item {
-                padding: 10px 15px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                color: #333;
-                font-size: 14px;
-                transition: background-color 0.2s;
-            }
-            .photo-context-menu .context-menu-item:hover {
-                background-color: #f5f5f5;
-            }
-            .photo-context-menu .context-menu-item i {
-                width: 16px;
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Remove context menu when clicking elsewhere
-        document.addEventListener('click', function removeContextMenu() {
-            contextMenu.remove();
-            document.removeEventListener('click', removeContextMenu);
-        });
-    }
-
-    // Global functions for context menu
-    window.changePhoto = function () {
-        photoInput.click();
-    };
-
-    window.removePhoto = function () {
-        profileImg.style.display = 'none';
-        photoPlaceholder.style.display = 'flex';
-        profileImg.src = '';
-        localStorage.removeItem('profilePhoto');
-        showNotification('Profile photo removed successfully!', 'success');
-    };
-});
-
-
-// ============================================
-// Theme Toggle Functionality
-// ============================================
-
-document.addEventListener('DOMContentLoaded', function () {
-    const themeToggle = document.getElementById('theme-checkbox');
-    const body = document.body;
-    const html = document.documentElement;
-
-    // Check for saved theme preference or default to 'light'
-    const currentTheme = localStorage.getItem('theme') || 'light';
-
-    // Apply the saved theme
-    html.setAttribute('data-theme', currentTheme);
-
-    // Update toggle state based on current theme
-    if (currentTheme === 'dark') {
-        themeToggle.checked = true;
-    }
-
-    // Theme toggle event listener
-    themeToggle.addEventListener('change', function () {
-        if (this.checked) {
-            // Switch to dark theme
-            html.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            showNotification('Dark theme activated! 🌙', 'success');
-        } else {
-            // Switch to light theme
-            html.setAttribute('data-theme', 'light');
-            localStorage.setItem('theme', 'light');
-            showNotification('Light theme activated! ☀️', 'success');
-        }
-    });
-
-    // Add keyboard support for theme toggle
-    themeToggle.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            this.checked = !this.checked;
-            this.dispatchEvent(new Event('change'));
-        }
-    });
-
-    // Auto theme detection based on system preference (optional)
-    function detectSystemTheme() {
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return 'dark';
-        }
-        return 'light';
-    }
-
-    // Listen for system theme changes
-    if (window.matchMedia) {
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        mediaQuery.addEventListener('change', function (e) {
-            // Only auto-switch if user hasn't manually set a preference
-            if (!localStorage.getItem('theme')) {
-                const newTheme = e.matches ? 'dark' : 'light';
-                html.setAttribute('data-theme', newTheme);
-                themeToggle.checked = newTheme === 'dark';
-            }
-        });
-    }
-
-    // Initialize theme on first visit based on system preference
-    if (!localStorage.getItem('theme')) {
-        const systemTheme = detectSystemTheme();
-        html.setAttribute('data-theme', systemTheme);
-        themeToggle.checked = systemTheme === 'dark';
-        localStorage.setItem('theme', systemTheme);
-    }
-
-    // Add smooth transition to theme changes
-    function enableTransitions() {
-        const css = document.createElement('style');
-        css.type = 'text/css';
-        css.innerHTML = `
-            * {
-                transition: background-color 0.3s ease, 
-                           color 0.3s ease, 
-                           border-color 0.3s ease,
-                           box-shadow 0.3s ease !important;
-            }
-        `;
-        document.head.appendChild(css);
-
-        // Remove after transitions complete
-        setTimeout(() => {
-            document.head.removeChild(css);
-        }, 300);
-    }
-
-    // Apply transitions when theme changes
-    themeToggle.addEventListener('change', enableTransitions);
-
-    // ============================================
-    // Enhanced Theme Features
-    // ============================================
-
-    // Add theme-aware animations
-    function updateAnimations() {
-        const isDark = html.getAttribute('data-theme') === 'dark';
-        const animatedElements = document.querySelectorAll('.fade-in');
-
-        animatedElements.forEach(el => {
-            if (isDark) {
-                el.style.animationDelay = '0.1s';
-            } else {
-                el.style.animationDelay = '0s';
-            }
-        });
-    }
-
-    // Update animations when theme changes
-    themeToggle.addEventListener('change', updateAnimations);
-
-    // Theme-aware scroll effects
-    function updateScrollEffects() {
-        const isDark = html.getAttribute('data-theme') === 'dark';
-        const navbar = document.getElementById('navbar');
-
-        if (isDark) {
-            navbar.style.backdropFilter = 'blur(15px)';
-        } else {
-            navbar.style.backdropFilter = 'blur(10px)';
-        }
-    }
-
-    // Update scroll effects when theme changes
-    themeToggle.addEventListener('change', updateScrollEffects);
-    updateScrollEffects(); // Initial call
-
-    // Add visual feedback for theme toggle
-    const themeLabel = document.querySelector('.theme-label');
-    if (themeLabel) {
-        themeLabel.addEventListener('click', function () {
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 150);
-        });
-    }
-
-    console.log(`Portfolio loaded with ${currentTheme} theme! 🎨`);
-});
-
-// ============================================
-// Theme Utility Functions
+// Global Utility Functions
 // ============================================
 
 // Function to get current theme
@@ -800,7 +699,73 @@ function setTheme(theme) {
     }
 }
 
+// Function to check different image formats (for development)
+function checkProfilePhoto() {
+    const imageFormats = [
+        './assets/profile-photo.jpg',
+        './assets/profile-photo.jpeg',
+        './assets/profile-photo.png',
+        './assets/profile-photo.webp',
+        './assets/profile.jpg',
+        './assets/murali-photo.jpg'
+    ];
+
+    const profileImg = document.getElementById('profile-img');
+    const photoPlaceholder = document.getElementById('photo-placeholder');
+
+    if (!profileImg || !photoPlaceholder) return;
+
+    let currentIndex = 0;
+
+    function tryNextFormat() {
+        if (currentIndex >= imageFormats.length) {
+            // No image found, show placeholder
+            profileImg.style.display = 'none';
+            photoPlaceholder.style.display = 'flex';
+            console.log('No profile photo found in any format');
+            return;
+        }
+
+        const testImg = new Image();
+        testImg.onload = function () {
+            // Image found and loaded
+            profileImg.src = imageFormats[currentIndex];
+            profileImg.style.display = 'block';
+            photoPlaceholder.style.display = 'none';
+            console.log(`Profile photo found: ${imageFormats[currentIndex]}`);
+        };
+        testImg.onerror = function () {
+            // Try next format
+            currentIndex++;
+            tryNextFormat();
+        };
+        testImg.src = imageFormats[currentIndex];
+    }
+
+    // Uncomment the line below to enable auto-detection
+    // tryNextFormat();
+}
+
 // Export functions for global use
 window.getCurrentTheme = getCurrentTheme;
 window.toggleTheme = toggleTheme;
 window.setTheme = setTheme;
+window.checkProfilePhoto = checkProfilePhoto;
+
+// ============================================
+// Debug Helper Functions (Development Only)
+// ============================================
+
+// Function to test all features (for development)
+function debugPortfolio() {
+    console.log('=== Portfolio Debug Info ===');
+    console.log('Current theme:', getCurrentTheme());
+    console.log('Profile image loaded:', document.getElementById('profile-img').style.display === 'block');
+    console.log('Mobile menu state:', document.getElementById('nav-menu').classList.contains('active'));
+    console.log('Back to top visible:', document.getElementById('back-to-top').classList.contains('visible'));
+    console.log('Scroll position:', window.scrollY);
+    console.log('Active section:', document.querySelector('.nav-link.active')?.textContent);
+}
+
+// Expose debug function globally (remove in production)
+window.debugPortfolio = debugPortfolio;

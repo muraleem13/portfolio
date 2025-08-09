@@ -1131,7 +1131,7 @@ body {
 }
 
 /* ============================================
-   Profile Photo Styles
+   Static Profile Photo Styles
    ============================================ */
 
 .profile-photo-container {
@@ -1147,8 +1147,14 @@ body {
     border-radius: var(--radius-full);
     overflow: hidden;
     box-shadow: var(--shadow-lg);
-    border: 4px solid white;
+    border: 4px solid var(--card-bg);
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    transition: all var(--transition-base);
+}
+
+.profile-photo:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-xl);
 }
 
 .profile-photo img {
@@ -1156,6 +1162,10 @@ body {
     height: 100%;
     object-fit: cover;
     transition: all var(--transition-base);
+}
+
+.profile-photo img:hover {
+    transform: scale(1.1);
 }
 
 .photo-placeholder {
@@ -1166,57 +1176,103 @@ body {
     height: 100%;
     background: rgba(255, 255, 255, 0.1);
     color: white;
-    cursor: pointer;
     transition: all var(--transition-base);
-}
-
-.photo-placeholder:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.02);
 }
 
 .photo-placeholder i {
     font-size: 3rem;
     margin-bottom: var(--spacing-sm);
+    opacity: 0.8;
 }
 
 .photo-placeholder span {
     font-size: var(--font-size-sm);
     font-weight: 500;
+    opacity: 0.9;
 }
 
-.photo-upload {
+/* Dark theme adjustments */
+[data-theme="dark"] .profile-photo {
+    border-color: var(--border-light);
+}
+
+/* Enhanced hover effects for static photo */
+.profile-photo::before {
+    content: '';
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     opacity: 0;
-    transition: all var(--transition-base);
+    transition: opacity var(--transition-base);
+    pointer-events: none;
 }
 
-.profile-photo:hover .photo-upload {
+.profile-photo:hover::before {
     opacity: 1;
 }
 
-.upload-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-full);
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--shadow-base);
-    transition: all var(--transition-base);
+/* Loading animation for profile photo */
+.profile-photo img {
+    animation: fadeIn 0.8s ease-in-out;
 }
 
-.upload-btn:hover {
-    background: var(--primary-dark);
-    transform: scale(1.1);
-    box-shadow: var(--shadow-md);
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
+
+/* Professional glow effect */
+.profile-photo::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--primary-color));
+    border-radius: var(--radius-full);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+}
+
+.profile-photo:hover::after {
+    opacity: 0.3;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .profile-photo {
+        width: 150px;
+        height: 150px;
+    }
+
+    .photo-placeholder i {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-photo {
+        width: 120px;
+        height: 120px;
+    }
+
+    .photo-placeholder i {
+        font-size: 2rem;
+    }
+}
+
 
 /* ============================================
    Resume Download Styles - PDF Only

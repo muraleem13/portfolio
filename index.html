@@ -68,19 +68,14 @@
     <section id="home" class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <!-- Profile Photo Placeholder -->
+                <!-- Static Profile Photo -->
                 <div class="profile-photo-container">
                     <div class="profile-photo" id="profile-photo">
-                        <img src="" alt="Murali Munireddy" id="profile-img" style="display: none;">
-                        <div class="photo-placeholder" id="photo-placeholder">
+                        <img src="./assets/images/profile-photo.jpg" alt="Murali Munireddy" id="profile-img"
+                            onerror="this.style.display='none'; document.getElementById('photo-placeholder').style.display='flex';">
+                        <div class="photo-placeholder" id="photo-placeholder" style="display: none;">
                             <i class="fas fa-user"></i>
-                            <span>Add Photo</span>
-                        </div>
-                        <div class="photo-upload" id="photo-upload">
-                            <input type="file" id="photo-input" accept="image/*" style="display: none;">
-                            <button class="upload-btn" onclick="document.getElementById('photo-input').click()">
-                                <i class="fas fa-camera"></i>
-                            </button>
+                            <span>Photo Coming Soon</span>
                         </div>
                     </div>
                 </div>

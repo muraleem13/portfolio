@@ -14,11 +14,31 @@
     <meta property="og:description"
         content="Experienced Data Engineer with 4+ years of expertise in developing scalable data pipelines and analytics solutions.">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://muraleem13.github.io/portfolio/">
+    <meta property="og:image" content="https://muraleem13.github.io/portfolio/assets/images/profile-photo.jpg">
+    <meta property="og:site_name" content="Murali Munireddy Portfolio">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Murali Munireddy - Data Software Engineer">
+    <meta name="twitter:description" content="Experienced Data Engineer with 4+ years of expertise in developing scalable data pipelines and analytics solutions.">
+    <meta name="twitter:image" content="https://muraleem13.github.io/portfolio/assets/images/profile-photo.jpg">
+
+    <!-- Additional SEO Meta Tags -->
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0066cc">
+    <meta name="msapplication-TileColor" content="#0066cc">
+    <link rel="canonical" href="https://muraleem13.github.io/portfolio/">
 
     <title>Murali Munireddy | Software Engineer</title>
 
     <link rel="icon" type="image/x-icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="./assets/images/profile-photo.jpg" as="image">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -28,6 +48,12 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Murali Portfolio">
 </head>
 
 <body>
@@ -55,10 +81,15 @@
                     <a href="#contact" class="nav-link">Contact</a>
                 </li>
             </ul>
-            <div class="nav-toggle" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon" id="theme-icon"></i>
+                </button>
+                <div class="nav-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
             </div>
         </div>
     </nav>
@@ -70,8 +101,13 @@
                 <!-- Static Profile Photo -->
                 <div class="profile-photo-container">
                     <div class="profile-photo" id="profile-photo">
-                        <img src="./assets/images/profile-photo.jpg" alt="Murali Munireddy" id="profile-img"
-                            onerror="this.style.display='none'; document.getElementById('photo-placeholder').style.display='flex';">
+                        <div class="photo-loading" id="photo-loading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Loading...</span>
+                        </div>
+                        <img src="./assets/images/profile-photo.jpg" alt="Murali Munireddy - Data Software Engineer" id="profile-img"
+                            onload="this.style.display='block'; document.getElementById('photo-loading').style.display='none';"
+                            onerror="this.style.display='none'; document.getElementById('photo-loading').style.display='none'; document.getElementById('photo-placeholder').style.display='flex';">
                         <div class="photo-placeholder" id="photo-placeholder" style="display: none;">
                             <i class="fas fa-user"></i>
                             <span>Photo Coming Soon</span>
@@ -526,6 +562,45 @@
 
     <!-- Custom JavaScript -->
     <script src="script.js"></script>
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Murali Munireddy",
+        "jobTitle": "Software Engineer",
+        "description": "Experienced Data Engineer with 4+ years of expertise in developing scalable data pipelines and analytics solutions.",
+        "url": "https://muraleem13.github.io/portfolio/",
+        "image": "https://muraleem13.github.io/portfolio/assets/images/profile-photo.jpg",
+        "email": "muralee.m13@gmail.com",
+        "telephone": "+917708229018",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Whitefield",
+            "addressRegion": "Bangalore",
+            "postalCode": "560066",
+            "addressCountry": "IN"
+        },
+        "sameAs": [
+            "https://www.linkedin.com/in/murali-munireddy-b45b80177",
+            "https://github.com/muraleem13"
+        ],
+        "knowsAbout": [
+            "Data Engineering",
+            "AWS",
+            "Python",
+            "PySpark",
+            "Big Data",
+            "Machine Learning",
+            "Cloud Computing"
+        ],
+        "worksFor": {
+            "@type": "Organization",
+            "name": "EPAM Systems"
+        }
+    }
+    </script>
 </body>
 
 </html>

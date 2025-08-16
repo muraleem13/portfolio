@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const navLinks = document.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('section');
     const backToTopBtn = document.getElementById('back-to-top');
-    const themeToggle = document.getElementById('theme-checkbox');
     const contactForm = document.getElementById('contact-form');
     const profileImg = document.getElementById('profile-img');
     const photoPlaceholder = document.getElementById('photo-placeholder');
@@ -84,32 +83,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const body = document.body;
     const html = document.documentElement;
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
 
     // Check for saved theme preference or default to 'light'
     const currentTheme = localStorage.getItem('theme') || 'light';
 
     // Apply the saved theme
     html.setAttribute('data-theme', currentTheme);
-
-    // Update toggle state based on current theme
-    if (currentTheme === 'dark' && themeToggle) {
-        themeToggle.checked = true;
-    }
+    updateThemeIcon(currentTheme);
 
     // Theme toggle event listener
     if (themeToggle) {
-        themeToggle.addEventListener('change', function () {
-            if (this.checked) {
-                // Switch to dark theme
-                html.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-                showNotification('Dark theme activated! 🌙', 'success');
-            } else {
-                // Switch to light theme
-                html.setAttribute('data-theme', 'light');
-                localStorage.setItem('theme', 'light');
-                showNotification('Light theme activated! ☀️', 'success');
-            }
+        themeToggle.addEventListener('click', function () {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+            
+            const themeMessage = newTheme === 'dark' ? 'Dark theme activated! 🌙' : 'Light theme activated! ☀️';
+            showNotification(themeMessage, 'success');
+            
             updateScrollEffects();
         });
 
@@ -117,10 +113,21 @@ document.addEventListener('DOMContentLoaded', function () {
         themeToggle.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                this.checked = !this.checked;
-                this.dispatchEvent(new Event('change'));
+                this.click();
             }
         });
+    }
+
+    function updateThemeIcon(theme) {
+        if (themeIcon) {
+            if (theme === 'dark') {
+                themeIcon.className = 'fas fa-sun';
+                themeToggle.setAttribute('aria-label', 'Switch to light mode');
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeToggle.setAttribute('aria-label', 'Switch to dark mode');
+            }
+        }
     }
 
     // Auto theme detection based on system preference
@@ -139,9 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!localStorage.getItem('theme')) {
                 const newTheme = e.matches ? 'dark' : 'light';
                 html.setAttribute('data-theme', newTheme);
-                if (themeToggle) {
-                    themeToggle.checked = newTheme === 'dark';
-                }
+                updateThemeIcon(newTheme);
             }
         });
     }
@@ -150,9 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!localStorage.getItem('theme')) {
         const systemTheme = detectSystemTheme();
         html.setAttribute('data-theme', systemTheme);
-        if (themeToggle) {
-            themeToggle.checked = systemTheme === 'dark';
-        }
+        updateThemeIcon(systemTheme);
         localStorage.setItem('theme', systemTheme);
     }
 

@@ -170,6 +170,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 navbar.style.backdropFilter = 'blur(10px)';
             }
         }
+
+        // Force a repaint to ensure all theme changes are applied
+        document.body.offsetHeight;
     }
 
     // ============================================

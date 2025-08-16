@@ -87,6 +87,369 @@
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
 }
 
+/* Dark Theme Specific Overrides */
+[data-theme="dark"] .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+[data-theme="dark"] .hero::before {
+    background-image:
+        radial-gradient(circle at 20% 50%, rgba(0, 102, 204, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 168, 232, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(0, 126, 167, 0.2) 0%, transparent 50%);
+}
+
+[data-theme="dark"] .hero-description span {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .hero-description span i {
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .social-link {
+    background: var(--card-bg);
+    color: var(--text-light);
+    border: 1px solid var(--border-light);
+}
+
+[data-theme="dark"] .social-link:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+[data-theme="dark"] .about {
+    background: var(--bg-light);
+}
+
+[data-theme="dark"] .skills {
+    background: var(--bg-gray);
+}
+
+[data-theme="dark"] .projects {
+    background: var(--bg-light);
+}
+
+[data-theme="dark"] .experience {
+    background: var(--bg-gray);
+}
+
+[data-theme="dark"] .contact {
+    background: var(--bg-light);
+}
+
+[data-theme="dark"] .skill-category,
+[data-theme="dark"] .project-card,
+[data-theme="dark"] .highlight-item,
+[data-theme="dark"] .cert-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+}
+
+[data-theme="dark"] .contact-form {
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+}
+
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group textarea {
+    background: var(--bg-light);
+    border-color: var(--border-light);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .form-group input:focus,
+[data-theme="dark"] .form-group textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+}
+
+[data-theme="dark"] .form-group label {
+    background: var(--card-bg);
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .form-group input:focus + label,
+[data-theme="dark"] .form-group input:valid + label,
+[data-theme="dark"] .form-group textarea:focus + label,
+[data-theme="dark"] .form-group textarea:valid + label {
+    background: var(--card-bg);
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .contact-item {
+    background: var(--bg-gray);
+    border: 1px solid var(--border-light);
+}
+
+[data-theme="dark"] .contact-item:hover {
+    background: var(--card-bg);
+}
+
+[data-theme="dark"] .contact-item a {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .contact-item a:hover {
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .tech-tag {
+    background: var(--bg-light);
+    color: var(--text-dark);
+    border-color: var(--border-light);
+}
+
+[data-theme="dark"] .project-link {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+[data-theme="dark"] .project-link:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+[data-theme="dark"] .project-link.disabled {
+    color: var(--text-muted);
+    border-color: var(--border-light);
+}
+
+[data-theme="dark"] .project-link.disabled:hover {
+    background: transparent;
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .timeline-dot {
+    background: var(--card-bg);
+    border-color: var(--primary-color);
+}
+
+[data-theme="dark"] .timeline-description {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .resume-section {
+    background: linear-gradient(135deg, #1f2937, #374151);
+    border-color: rgba(220, 38, 38, 0.3);
+}
+
+[data-theme="dark"] .resume-download-btn-single {
+    background: var(--card-bg);
+    border-color: #dc2626;
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .resume-download-btn-single:hover {
+    background: #dc2626;
+    color: white;
+}
+
+[data-theme="dark"] .resume-download-btn-single i {
+    color: #dc2626;
+}
+
+[data-theme="dark"] .resume-download-btn-single:hover i {
+    color: white;
+}
+
+[data-theme="dark"] .footer {
+    background: var(--bg-dark);
+}
+
+[data-theme="dark"] .footer-content p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] .footer-link {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+[data-theme="dark"] .footer-link:hover {
+    background: var(--primary-color);
+}
+
+[data-theme="dark"] .nav-menu {
+    background-color: var(--card-bg);
+}
+
+[data-theme="dark"] .nav-menu li {
+    border-bottom: 1px solid var(--border-light);
+}
+
+[data-theme="dark"] .nav-menu li:last-child {
+    border-bottom: none;
+}
+
+[data-theme="dark"] .nav-link {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .nav-link:hover,
+[data-theme="dark"] .nav-link.active {
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .nav-link::after {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    opacity: 1;
+}
+
+[data-theme="dark"] .bar {
+    background-color: var(--text-dark);
+}
+
+[data-theme="dark"] .theme-toggle {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+    background: var(--surface-bg);
+}
+
+[data-theme="dark"] .section-title {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .subsection-title {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .timeline-title {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .timeline-company {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .project-title {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .project-description {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .skill-title {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .highlight-item span {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .cert-item span {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .contact-info h3 {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .contact-info p {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .about-text p {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .resume-section h3 {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .resume-section p {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .hero-subtitle {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .hero-description {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .scroll-down {
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .scroll-down:hover {
+    color: var(--primary-dark);
+}
+
+[data-theme="dark"] .back-to-top {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+[data-theme="dark"] .back-to-top:hover {
+    box-shadow: var(--shadow-xl);
+}
+
+/* Dark theme notification styles */
+[data-theme="dark"] .notification {
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+}
+
+[data-theme="dark"] .notification-message {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .notification-close {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .notification-close:hover {
+    background: var(--surface-bg);
+    color: var(--text-dark);
+}
+
+/* Additional dark theme improvements */
+[data-theme="dark"] .skill-tag {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+[data-theme="dark"] .skill-tag:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+[data-theme="dark"] .highlight-item i {
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .cert-item i {
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .contact-item i {
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .project-header i {
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .skill-title i {
+    color: var(--primary-color);
+}
+
+/* Ensure proper contrast for all text elements */
+[data-theme="dark"] * {
+    color-scheme: dark;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 1;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -277,6 +640,7 @@ body {
     height: 2px;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     transition: width var(--transition-base);
+    opacity: 0.8;
 }
 
 .nav-link:hover,

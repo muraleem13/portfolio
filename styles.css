@@ -1716,6 +1716,11 @@ body {
         color: var(--primary-color);
     }
 
+    /* Remove underlines from mobile menu items */
+    .nav-menu li a::after {
+        display: none !important;
+    }
+
     .nav-toggle {
         display: flex;
     }

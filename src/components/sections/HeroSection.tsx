@@ -48,9 +48,9 @@ export function HeroSection({ onResumeDownload }: HeroSectionProps) {
           </div>
 
           <h1 className="hero-title">
-            Hi, I&apos;m <span className="highlight">Murali Munireddy</span>
+            Hello 👋, I&apos;m <span className="highlight">Murali Munireddy</span>
           </h1>
-          <h2 className="hero-subtitle">Software Engineer</h2>
+          <h2 className="hero-subtitle">Senior Software Engineer</h2>
           <p className="hero-description">
             <span title="Data Engineering">
               <i className="fas fa-database" /> Data Engineering

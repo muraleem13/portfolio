@@ -1,195 +1,106 @@
-# Murali Munireddy - Portfolio Website
+# Murali Munireddy Portfolio (React + TypeScript + Vite)
 
-A modern, responsive portfolio website showcasing my skills, experience, and projects as a Data Software Engineer.
+Production-grade portfolio application migrated from static HTML/CSS/JS into a scalable React architecture.
 
-## 🌟 Features
+## Tech Stack
 
-### ✨ **Modern Design**
-- Clean, professional design with smooth animations
-- Responsive layout that works on all devices
-- Dark/Light theme toggle with system preference detection
-- Modern CSS with custom properties and gradients
+- React 18 (functional components + hooks)
+- TypeScript
+- Vite
+- React Router
+- CSS (modularized into React app style layers)
 
-### 🚀 **Performance Optimized**
-- Service Worker for offline support and caching
-- Preloaded critical resources
-- Optimized images and assets
-- Fast loading times
+## Architecture
 
-### 📱 **Mobile-First**
-- Fully responsive design
-- Touch-friendly navigation
-- Optimized for mobile devices
-- Progressive Web App features
-
-### 🎯 **SEO Optimized**
-- Structured data (JSON-LD)
-- Open Graph and Twitter Card meta tags
-- Semantic HTML structure
-- Optimized meta descriptions
-
-### ♿ **Accessibility**
-- ARIA labels and semantic HTML
-- Keyboard navigation support
-- Screen reader friendly
-- High contrast ratios
-
-## 🛠️ Technologies Used
-
-- **HTML5** - Semantic markup
-- **CSS3** - Modern styling with custom properties
-- **JavaScript (ES6+)** - Interactive functionality
-- **Font Awesome** - Icons
-- **Google Fonts** - Typography (Inter)
-- **Service Worker** - Offline support and caching
-
-## 📁 Project Structure
-
-```
-portfolio/
-├── index.html              # Main HTML file
-├── styles.css              # CSS styles
-├── script.js               # JavaScript functionality
-├── sw.js                   # Service Worker
-├── README.md               # Project documentation
-└── assets/
-    ├── images/
-    │   └── profile-photo.jpg
-    └── resume/
-        └── Resume_Murali_Munireddy.pdf
-```
-
-## 🚀 Getting Started
-
-### Prerequisites
-- A modern web browser
-- Basic knowledge of HTML, CSS, and JavaScript
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/muraleem13/portfolio.git
-   cd portfolio
-   ```
-
-2. **Open in browser**
-   - Simply open `index.html` in your web browser
-   - Or use a local server for development
-
-3. **For development with live reload**
-   ```bash
-   # Using Python
-   python -m http.server 8000
-   
-   # Using Node.js
-   npx serve .
-   
-   # Using PHP
-   php -S localhost:8000
-   ```
-
-## 🌐 Deployment
-
-### GitHub Pages (Recommended)
-1. Push your code to a GitHub repository
-2. Go to repository Settings > Pages
-3. Select source branch (usually `main` or `master`)
-4. Your site will be available at `https://username.github.io/repository-name`
-
-### Other Hosting Options
-- **Netlify** - Drag and drop deployment
-- **Vercel** - Git-based deployment
-- **Firebase Hosting** - Google's hosting solution
-- **Any static hosting service**
-
-## 🎨 Customization
-
-### Colors
-Update the CSS custom properties in `styles.css`:
-```css
-:root {
-    --primary-color: #0066cc;
-    --secondary-color: #00a8e8;
-    /* ... other colors */
-}
+```text
+.
+|-- index.html
+|-- package.json
+|-- vite.config.ts
+|-- tsconfig.json
+|-- tsconfig.app.json
+|-- tsconfig.node.json
+|-- public/
+|   |-- manifest.json
+|   |-- robots.txt
+|   |-- sw.js
+|   `-- assets/
+|       |-- images/profile-photo.jpg
+|       `-- resume/Resume_Murali_Munireddy.pdf
+`-- src/
+    |-- main.tsx
+    |-- App.tsx
+    |-- routes.tsx
+    |-- app/
+    |   |-- ThemeProvider.tsx
+    |   `-- NotificationProvider.tsx
+    |-- pages/
+    |   `-- PortfolioPage.tsx
+    |-- components/
+    |   |-- layout/
+    |   |   |-- Navbar.tsx
+    |   |   |-- Footer.tsx
+    |   |   |-- BackToTopButton.tsx
+    |   |   `-- Layout.tsx
+    |   |-- sections/
+    |   |   |-- HeroSection.tsx
+    |   |   |-- AboutSection.tsx
+    |   |   |-- SkillsSection.tsx
+    |   |   |-- ProjectsSection.tsx
+    |   |   |-- ExperienceSection.tsx
+    |   |   |-- CertificationsSection.tsx
+    |   |   |-- ContactSection.tsx
+    |   |   `-- SectionSeparator.tsx
+    |   `-- ui/
+    |       `-- NotificationToast.tsx
+    |-- hooks/
+    |   |-- useScrollSpy.ts
+    |   `-- useRevealAnimation.ts
+    |-- utils/
+    |   |-- env.ts
+    |   |-- portfolioData.ts
+    |   |-- scroll.ts
+    |   `-- serviceWorker.ts
+    |-- types/
+    |   `-- portfolio.ts
+    `-- styles/
+        |-- loading.module.css
+        |-- portfolio.css
+        `-- react-app.css
 ```
 
-### Content
-- Update personal information in `index.html`
-- Replace profile photo in `assets/images/`
-- Update resume in `assets/resume/`
-- Modify skills, projects, and experience sections
+## Local Development
 
-### Styling
-- Modify `styles.css` for design changes
-- Update animations and transitions
-- Customize responsive breakpoints
+1. Install dependencies:
 
-## 📱 Browser Support
-
-- ✅ Chrome (latest)
-- ✅ Firefox (latest)
-- ✅ Safari (latest)
-- ✅ Edge (latest)
-- ✅ Mobile browsers
-
-## 🔧 Development
-
-### File Structure Best Practices
-- Keep HTML semantic and accessible
-- Use CSS custom properties for theming
-- Modular JavaScript with clear separation of concerns
-- Optimize images for web use
-
-### Performance Tips
-- Compress images before adding to assets
-- Minify CSS and JavaScript for production
-- Use WebP format for images when possible
-- Enable gzip compression on server
-
-## 📊 Analytics (Optional)
-
-To add Google Analytics:
-
-1. Get your tracking ID from Google Analytics
-2. Add this script before `</head>` in `index.html`:
-```html
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'GA_TRACKING_ID');
-</script>
+```bash
+npm install
 ```
 
-## 🤝 Contributing
+2. Start dev server:
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+```bash
+npm run dev
+```
 
-## 📄 License
+3. Production build:
 
-This project is open source and available under the [MIT License](LICENSE).
+```bash
+npm run build
+```
 
-## 📞 Contact
+4. Preview production build:
 
-- **Email**: muralee.m13@gmail.com
-- **LinkedIn**: [Murali Munireddy](https://www.linkedin.com/in/murali-munireddy-b45b80177)
-- **GitHub**: [muraleem13](https://github.com/muraleem13)
+```bash
+npm run preview
+```
 
-## 🙏 Acknowledgments
+## Environment Variables
 
-- Font Awesome for icons
-- Google Fonts for typography
-- Unsplash for stock photos (if used)
-- The open-source community for inspiration
+Create `.env` from `.env.example`:
 
----
-
-**Built with ❤️ by Murali Munireddy**
+```bash
+VITE_CONTACT_EMAIL=muralee.m13@gmail.com
+VITE_CONTACT_PHONE=+917708229018
+VITE_CONTACT_LOCATION=Whitefield, Bangalore - 560066
+```

@@ -1,5 +1,13 @@
-const CACHE_NAME = "portfolio-v2";
-const STATIC_ASSETS = ["/", "/manifest.json", "/robots.txt", "/assets/images/profile-photo.jpg", "/assets/resume/Resume_Murali_Munireddy.pdf"];
+const CACHE_NAME = "portfolio-v3";
+const BASE_PATH = self.location.pathname.replace(/sw\.js$/, "");
+const withBase = (path) => `${BASE_PATH}${path}`;
+const STATIC_ASSETS = [
+  withBase(""),
+  withBase("manifest.json"),
+  withBase("robots.txt"),
+  withBase("assets/images/profile-photo.jpg"),
+  withBase("assets/resume/Resume_Murali_Munireddy.pdf")
+];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -35,7 +43,7 @@ self.addEventListener("fetch", (event) => {
   if (event.request.mode === "navigate") {
     event.respondWith(
       fetch(event.request).catch(() => {
-        return caches.match("/") || caches.match("/index.html");
+        return caches.match(withBase("")) || caches.match(withBase("index.html"));
       })
     );
     return;
